@@ -1,0 +1,11 @@
+{
+  "host": "0.0.0.0",
+  "port": 8765,
+  "stm32_serial": "/dev/ttyUSB0",
+  "stm32_baudrate": 115200,
+  "gps_serial": "/dev/ttyAMA0",
+  "gps_baudrate": 9600,
+  "simulate_when_serial_missing": true,
+  "row_end_threshold_cm": 45,
+  "telemetry_hz": 5
+}

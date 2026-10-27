@@ -1,0 +1,224 @@
+
+.overview-hero { margin-top: 18rpx; padding: 24rpx; }
+.hero-metrics { margin-top: 10rpx; }
+.focus-card { min-height: 196rpx; }
+.accent-green { color: #2ee8b6; text-shadow: 0 0 36rpx rgba(46,232,182,0.28); }
+.accent-gold { color: #ffcf68; }
+.stage-big {
+  margin-top: 18rpx;
+  font-size: 54rpx;
+  line-height: 1.1;
+  font-weight: 900;
+  color: #ffffff;
+}
+.quick-panels { margin-top: 18rpx; }
+.inner-panel {
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: rgba(7,17,31,0.36);
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.compact-head { margin-bottom: 16rpx; }
+.small-title { font-size: 28rpx; }
+.progress-track {
+  height: 18rpx;
+  border-radius: 999rpx;
+  overflow: hidden;
+  background: rgba(255,255,255,0.10);
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #2ee8b6, #ffcf68);
+}
+.timeline-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10rpx;
+  margin-top: 20rpx;
+}
+.timeline-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  font-size: 20rpx;
+  color: rgba(255,255,255,0.46);
+}
+.timeline-dot {
+  width: 22rpx;
+  height: 22rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.16);
+}
+.timeline-item.active { color: #2ee8b6; font-weight: 800; }
+.timeline-item.active .timeline-dot { background: #2ee8b6; box-shadow: 0 0 20rpx rgba(46,232,182,0.82); }
+.cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14rpx; margin-top: 8rpx; }
+.cta-btn {
+  min-height: 94rpx;
+  border-radius: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 800;
+  background: rgba(255,255,255,0.10);
+  color: #ffffff;
+}
+.cta-main {
+  background: linear-gradient(135deg, #2ee8b6, #ffcf68);
+  color: #06121f;
+}
+.tip-row { margin-top: 14rpx; }
+.capability-panel { margin-top: 18rpx; }
+.ability-card {
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: linear-gradient(160deg, rgba(63,84,109,0.44), rgba(13,28,47,0.84));
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.ability-tag {
+  display: inline-block;
+  padding: 8rpx 14rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  color: #06121f;
+  background: linear-gradient(135deg, #2ee8b6, #a4ffe1);
+}
+.ability-title {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+.ability-desc {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.60);
+}
+.score-grid { margin-top: 18rpx; }
+.score-panel,.log-panel { min-height: 280rpx; }
+.score-list { margin-top: 10rpx; }
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid rgba(255,255,255,0.08);
+}
+.score-name { font-size: 24rpx; color: rgba(255,255,255,0.62); }
+.score-value { font-size: 28rpx; font-weight: 800; }
+.log-line {
+  display: flex;
+  gap: 14rpx;
+  padding: 14rpx 0;
+  border-bottom: 1rpx solid rgba(255,255,255,0.08);
+}
+.log-time { width: 104rpx; font-size: 22rpx; color: rgba(46,232,182,0.88); }
+.log-text { flex: 1; font-size: 22rpx; color: rgba(255,255,255,0.62); }
+
+
+/* V6 修复：总览页快捷入口与流程卡在手机预览下避免横向挤压 */
+.quick-panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18rpx;
+  margin-top: 18rpx;
+}
+
+.cta-grid {
+  grid-template-columns: 1fr;
+}
+
+.cta-btn {
+  width: 100%;
+  min-width: 0;
+  padding: 0 16rpx;
+  box-sizing: border-box;
+}
+
+.tip-row {
+  flex-wrap: wrap;
+}
+
+.timeline-row {
+  flex-wrap: wrap;
+}
+
+.timeline-item {
+  min-width: 84rpx;
+}
+
+
+/* V7 总览大屏：手机单列防溢出，平板恢复大屏信息密度 */
+.phone-mode .hero-metrics,
+.phone-mode .score-grid,
+.phone-mode .capability-panel .grid-3 {
+  grid-template-columns: 1fr;
+}
+
+.phone-mode .quick-panels {
+  grid-template-columns: 1fr;
+}
+
+.phone-mode .cta-grid {
+  grid-template-columns: 1fr;
+}
+
+.phone-mode .cta-btn {
+  width: 100%;
+  min-width: 0;
+}
+
+.pad-mode .overview-hero {
+  padding: 30rpx;
+}
+
+.pad-mode .hero-metrics {
+  grid-template-columns: 1.05fr 1fr 1fr;
+}
+
+.pad-mode .quick-panels {
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: stretch;
+}
+
+.pad-mode .cta-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.pad-mode .capability-panel .grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.pad-mode .score-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.pad-mode .focus-card {
+  min-height: 214rpx;
+}
+
+.pad-mode .stage-big {
+  font-size: 60rpx;
+}
+
+.pad-mode .timeline-row {
+  flex-wrap: nowrap;
+}
+
+.phone-mode .timeline-row {
+  flex-wrap: wrap;
+}
+
+.phone-mode .timeline-item {
+  min-width: 84rpx;
+}
+
+.pad-mode .tip-row,
+.phone-mode .tip-row {
+  flex-wrap: wrap;
+}

@@ -1,0 +1,19 @@
+# PlatformIO 构建产物
+.pio/
+.pioenvs/
+
+# IDE 配置（含本机绝对路径）
+.vscode/
+*.code-workspace
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# 生成的说明文档
+*.docx
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini

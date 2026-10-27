@@ -1,0 +1,3 @@
+aiohttp
+pyserial
+pynmea2

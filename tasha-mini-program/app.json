@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/overview/index",
+    "pages/control/index",
+    "pages/sensor/index"
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#07111f",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#7f8ea3",
+    "selectedColor": "#2ee8b6",
+    "backgroundColor": "#081320",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/overview/index",
+        "text": "总览大屏",
+        "iconPath": "images/tab/overview.png",
+        "selectedIconPath": "images/tab/overview_active.png"
+      },
+      {
+        "pagePath": "pages/control/index",
+        "text": "远程控制",
+        "iconPath": "images/tab/control.png",
+        "selectedIconPath": "images/tab/control_active.png"
+      },
+      {
+        "pagePath": "pages/sensor/index",
+        "text": "传感与定位",
+        "iconPath": "images/tab/sensor.png",
+        "selectedIconPath": "images/tab/sensor_active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

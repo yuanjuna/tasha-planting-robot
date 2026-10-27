@@ -1,0 +1,160 @@
+<view class="page-shell {{isPad ? 'pad-mode' : 'phone-mode'}}">
+  <view class="top-bg"></view>
+  <view class="nav-safe"></view>
+
+  <view class="header-card">
+    <view class="header-left">
+      <view class="brand-row">
+        <view class="brand-dot"></view>
+        <text class="brand-sub">作品控制界面</text>
+      </view>
+      <text class="brand-title">踏沙四履种植者</text>
+      <text class="brand-desc">核心能力、关键状态、环境感知和人工接管同屏展示。</text>
+    </view>
+    <view class="header-right">
+      <view class="connect-badge {{statusLevel}}">
+        <view class="signal-dot"></view>
+        <text>{{connected ? '在线' : (connecting ? '连接中' : '离线')}}</text>
+      </view>
+      <text class="header-chip">最后更新 {{lastUpdate}}</text>
+      <text class="header-chip">模式：{{telemetry.mode === 'auto' ? '自动种植' : '人工控制'}}</text>
+    </view>
+  </view>
+
+  <view class="connect-panel glass-card">
+    <view class="input-wrap">
+      <text class="input-label">树莓派 IP / 网关地址</text>
+      <input class="ip-input" value="{{host}}" bindinput="onHostInput" placeholder="例如 192.168.4.1:8765" placeholder-class="placeholder" />
+    </view>
+    <button wx:if="{{!connected}}" class="connect-btn" bindtap="connect">连接设备</button>
+    <button wx:else class="disconnect-btn" bindtap="disconnect">断开连接</button>
+  </view>
+
+  <view class="section-card glass-card overview-hero">
+    <view class="section-head">
+      <view>
+        <text class="section-title">作业总览</text>
+      </view>
+      <view class="pill-row">
+        <text class="pill good-pill">种植闭环</text>
+        <text class="pill">路径换行</text>
+        <text class="pill">实时感知</text>
+      </view>
+    </view>
+
+    <view class="grid-3 hero-metrics">
+      <view class="metric-card glass-card focus-card">
+        <text class="metric-label">已种苗数</text>
+        <view class="metric-value-row">
+          <text class="metric-value accent-green">{{telemetry.plant_count}}</text>
+          <text class="metric-unit">/ {{telemetry.total_count}} 棵</text>
+        </view>
+        <text class="metric-sub">以“浇水完成”为一棵种植结束标志</text>
+      </view>
+
+      <view class="metric-card glass-card focus-card">
+        <text class="metric-label">当前状态</text>
+        <view class="stage-big">{{telemetry.stageText}}</view>
+        <text class="metric-sub">{{telemetry.stageDesc}}</text>
+      </view>
+
+      <view class="metric-card glass-card focus-card">
+        <text class="metric-label">行末识别</text>
+        <view class="metric-value-row">
+          <text class="metric-value accent-gold">{{telemetry.ultrasonic_cm}}</text>
+          <text class="metric-unit">cm</text>
+        </view>
+        <text class="metric-sub">{{telemetry.row_end ? '已接近行末，准备换行' : '当前行内运行正常'}}</text>
+      </view>
+    </view>
+
+    <view class="grid-2 quick-panels">
+      <view class="section-card inner-panel">
+        <view class="section-head compact-head">
+          <text class="section-title small-title">流程进度</text>
+          <text class="mini-tag">第 {{telemetry.row}} 行 · 第 {{telemetry.point}} 点</text>
+        </view>
+        <view class="progress-track">
+          <view class="progress-fill" style="width: {{telemetry.progress}}%;"></view>
+        </view>
+        <view class="timeline-row">
+          <view wx:for="{{stageSteps}}" wx:key="key" class="timeline-item {{telemetry.stage === item.key ? 'active' : ''}}">
+            <view class="timeline-dot"></view>
+            <text>{{item.text}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-card inner-panel">
+        <view class="section-head compact-head">
+          <text class="section-title small-title">快捷入口</text>
+        </view>
+        <view class="cta-grid">
+          <button class="cta-btn cta-main" bindtap="gotoControl">进入远程控制</button>
+          <button class="cta-btn" bindtap="gotoSensor">查看传感与定位</button>
+        </view>
+        <view class="pill-row tip-row">
+          <text class="pill">支持手动接管</text>
+          <text class="pill">支持急停</text>
+          <text class="pill">支持状态回传</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-card glass-card capability-panel">
+    <view class="section-head">
+      <view>
+        <text class="section-title">核心能力亮点</text>
+      </view>
+      <text class="mini-tag">竞赛重点</text>
+    </view>
+    <view class="grid-3">
+      <view wx:for="{{capabilityList}}" wx:key="title" class="ability-card">
+        <text class="ability-tag">{{item.tag}}</text>
+        <text class="ability-title">{{item.title}}</text>
+        <text class="ability-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="grid-2 score-grid">
+    <view class="section-card glass-card score-panel">
+      <view class="section-head compact-head">
+        <text class="section-title small-title">系统关键指标</text>
+        <text class="mini-tag">实时数据</text>
+      </view>
+      <view class="score-list">
+        <view class="score-row">
+          <text class="score-name">IMU 航向角</text>
+          <text class="score-value">{{telemetry.imu.yaw}}°</text>
+        </view>
+        <view class="score-row">
+          <text class="score-name">GPS 状态</text>
+          <text class="score-value">{{telemetry.gps.fix ? '已定位' : '未定位'}}</text>
+        </view>
+        <view class="score-row">
+          <text class="score-name">雷达前向距离</text>
+          <text class="score-value">{{telemetry.radar.front}} cm</text>
+        </view>
+        <view class="score-row">
+          <text class="score-name">电池电量</text>
+          <text class="score-value">{{telemetry.battery.percent}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card glass-card log-panel">
+      <view class="section-head compact-head">
+        <text class="section-title small-title">运行日志</text>
+        <text class="mini-tag">最近 6 条</text>
+      </view>
+      <view wx:for="{{logList}}" wx:key="time" class="log-line">
+        <text class="log-time">{{item.time}}</text>
+        <text class="log-text">{{item.text}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

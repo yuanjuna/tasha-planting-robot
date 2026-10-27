@@ -1,0 +1,158 @@
+
+.control-grid { margin-top: 18rpx; }
+.remote-panel,.state-panel,.action-panel { padding: 24rpx; }
+.compact-head { margin-bottom: 18rpx; }
+.speed-card {
+  padding: 22rpx 22rpx 10rpx;
+  border-radius: 24rpx;
+  background: rgba(7,17,31,0.42);
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.speed-head { display: flex; gap: 10rpx; align-items: center; }
+.speed-label,.speed-value { font-size: 30rpx; font-weight: 900; }
+.optimized-pad {
+  margin-top: 22rpx;
+  padding: 16rpx;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
+  gap: 14rpx;
+  border-radius: 30rpx;
+  background: rgba(2,12,26,0.30);
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.pad-empty { min-height: 124rpx; height: 124rpx; }
+.drive-btn,.stop-btn,.action-btn {
+  margin: 0; padding: 0; border: 0; box-sizing: border-box;
+  width: 100%; min-width: 0; max-width: 100%;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+}
+.drive-btn {
+  flex-direction: column; gap: 10rpx;
+  min-height: 132rpx; height: 132rpx;
+  border-radius: 30rpx;
+  color: rgba(255,255,255,0.95);
+  background: linear-gradient(145deg, rgba(73,93,119,0.62), rgba(20,34,52,0.88));
+  border: 1rpx solid rgba(156,193,237,0.20);
+  box-shadow: inset 0 2rpx 0 rgba(255,255,255,0.10), 0 16rpx 34rpx rgba(0,0,0,0.24);
+}
+.drive-forward { grid-column: 2; grid-row: 1; }
+.turn-left-btn { grid-column: 1; grid-row: 2; }
+.stop-btn { grid-column: 2; grid-row: 2; min-height: 132rpx; height: 132rpx; }
+.turn-right-btn { grid-column: 3; grid-row: 2; }
+.drive-backward { grid-column: 2; grid-row: 3; }
+.drive-icon { font-size: 52rpx; line-height: 1; }
+.drive-label { font-size: 28rpx; line-height: 32rpx; font-weight: 900; }
+.drive-btn.pressed { color: #06121f; background: linear-gradient(135deg, #2ee8b6, #a8ffe3); box-shadow: 0 0 30rpx rgba(46,232,182,0.3); }
+.drive-btn.pressed .drive-label,.drive-btn.pressed .drive-icon { color: #06121f; }
+.stop-btn {
+  border-radius: 32rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #ff4d4f, #ff8a66);
+  box-shadow: 0 18rpx 42rpx rgba(255,77,79,0.34), inset 0 2rpx 0 rgba(255,255,255,0.30);
+}
+.stop-text { font-size: 38rpx; line-height: 42rpx; font-weight: 900; }
+.state-panel .mini-metrics { gap: 14rpx; }
+.mini-card {
+  padding: 18rpx;
+  border-radius: 22rpx;
+  background: rgba(7,17,31,0.34);
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.accent-green { color: #2ee8b6; }
+.accent-gold { color: #ffcf68; }
+.status-box {
+  margin-top: 16rpx;
+  padding: 18rpx;
+  border-radius: 22rpx;
+  background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+}
+.status-title { display: block; font-size: 28rpx; font-weight: 800; }
+.status-desc { display: block; margin-top: 10rpx; font-size: 22rpx; color: rgba(255,255,255,0.60); line-height: 1.5; }
+.log-box { margin-top: 14rpx; }
+.log-line { display: flex; gap: 12rpx; padding: 12rpx 0; border-bottom: 1rpx solid rgba(255,255,255,0.08); }
+.log-time { width: 104rpx; font-size: 20rpx; color: rgba(46,232,182,0.90); }
+.log-text { flex: 1; font-size: 20rpx; color: rgba(255,255,255,0.62); }
+.action-panel { margin-top: 18rpx; }
+.action-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16rpx;
+}
+.action-btn {
+  min-height: 104rpx; height: 104rpx;
+  border-radius: 26rpx;
+  color: #ffffff;
+  background: linear-gradient(145deg, rgba(56,74,99,0.62), rgba(18,31,48,0.88));
+  border: 1rpx solid rgba(156,193,237,0.16);
+}
+.action-btn.primary { color: #06121f; background: linear-gradient(135deg, #2ee8b6, #ffcf68); }
+.action-btn.danger { grid-column: span 2; background: linear-gradient(135deg, #ff4d4f, #ff8f6b); }
+.action-text { font-size: 28rpx; font-weight: 900; text-align: center; }
+
+
+/* V7 远程控制：平板左右分区，手机上下分区 */
+.phone-mode .control-grid {
+  grid-template-columns: 1fr;
+}
+
+.pad-mode .control-grid {
+  grid-template-columns: 1.06fr 0.94fr;
+  align-items: stretch;
+}
+
+.phone-mode .optimized-pad {
+  padding: 14rpx;
+  gap: 12rpx;
+}
+
+.phone-mode .drive-btn,
+.phone-mode .stop-btn {
+  min-height: 124rpx;
+  height: 124rpx;
+}
+
+.phone-mode .pad-empty {
+  min-height: 124rpx;
+  height: 124rpx;
+}
+
+.pad-mode .remote-panel,
+.pad-mode .state-panel {
+  min-height: 760rpx;
+}
+
+.pad-mode .optimized-pad {
+  padding: 20rpx;
+  gap: 16rpx;
+}
+
+.pad-mode .drive-btn,
+.pad-mode .stop-btn {
+  min-height: 146rpx;
+  height: 146rpx;
+}
+
+.pad-mode .pad-empty {
+  min-height: 146rpx;
+  height: 146rpx;
+}
+
+.pad-mode .action-grid {
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+}
+
+.pad-mode .action-btn.danger {
+  grid-column: auto;
+}
+
+.phone-mode .action-grid {
+  grid-template-columns: 1fr 1fr;
+}
+
+.phone-mode .action-btn.danger {
+  grid-column: span 2;
+}
+
+.phone-mode .mini-metrics,
+.pad-mode .mini-metrics {
+  grid-template-columns: 1fr 1fr;
+}

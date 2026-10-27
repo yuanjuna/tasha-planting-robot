@@ -1,0 +1,85 @@
+
+.sensor-top-grid,.lower-grid { margin-top: 18rpx; }
+.radar-panel,.rowend-panel,.gps-panel,.sys-panel,.footer-panel { padding: 24rpx; }
+.compact-head { margin-bottom: 18rpx; }
+.radar-item {
+  display: grid;
+  grid-template-columns: 56rpx 1fr 120rpx;
+  gap: 14rpx;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+.radar-label,.radar-value { font-size: 22rpx; color: rgba(255,255,255,0.66); }
+.bar { height: 18rpx; border-radius: 999rpx; overflow: hidden; background: rgba(255,255,255,0.12); }
+.bar-fill { height: 100%; border-radius: 999rpx; background: linear-gradient(90deg, rgba(46,232,182,0.42), #2ee8b6); }
+.bar-fill.front { background: linear-gradient(90deg, rgba(255,207,104,0.42), #ffcf68); }
+.mini-metrics { gap: 14rpx; }
+.mini-card {
+  padding: 18rpx;
+  border-radius: 22rpx;
+  background: rgba(7,17,31,0.36);
+  border: 1rpx solid rgba(255,255,255,0.08);
+}
+.status-pills { margin-top: 16rpx; }
+.accent-green { color: #2ee8b6; }
+.accent-gold { color: #ffcf68; }
+.gps-card-inner {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.gps-top-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
+.gps-status {
+  display: inline-flex; padding: 10rpx 16rpx; border-radius: 999rpx; font-size: 22rpx; font-weight: 800;
+}
+.gps-status.ok { color: #06121f; background: linear-gradient(135deg, #2ee8b6, #a4ffe1); }
+.gps-status.wait { color: #ffffff; background: rgba(255,255,255,0.10); }
+.gps-speed { font-size: 22rpx; color: rgba(255,255,255,0.64); }
+.coord-block {
+  padding: 18rpx;
+  border-radius: 22rpx;
+  background: rgba(7,17,31,0.34);
+  border: 1rpx solid rgba(255,255,255,0.08);
+  margin-top: 12rpx;
+}
+.coord-label { display: block; font-size: 22rpx; color: rgba(255,255,255,0.56); }
+.coord-value { display: block; margin-top: 10rpx; font-size: 30rpx; font-weight: 800; }
+.score-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18rpx 0; border-bottom: 1rpx solid rgba(255,255,255,0.08);
+}
+.score-name { font-size: 24rpx; color: rgba(255,255,255,0.64); }
+.score-value { font-size: 28rpx; font-weight: 800; }
+.footer-panel { margin-top: 18rpx; }
+
+
+/* V7 传感与定位：平板双列仪表盘，手机单列不溢出 */
+.phone-mode .sensor-top-grid,
+.phone-mode .lower-grid {
+  grid-template-columns: 1fr;
+}
+
+.pad-mode .sensor-top-grid,
+.pad-mode .lower-grid {
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+}
+
+.phone-mode .mini-metrics,
+.pad-mode .mini-metrics {
+  grid-template-columns: 1fr 1fr;
+}
+
+.phone-mode .radar-item {
+  grid-template-columns: 48rpx 1fr 104rpx;
+}
+
+.pad-mode .radar-item {
+  grid-template-columns: 56rpx 1fr 120rpx;
+}
+
+.phone-mode .footer-panel .pill-row,
+.pad-mode .footer-panel .pill-row {
+  flex-wrap: wrap;
+}

@@ -1,0 +1,144 @@
+<view class="page-shell {{isPad ? 'pad-mode' : 'phone-mode'}}">
+  <view class="top-bg"></view>
+  <view class="nav-safe"></view>
+
+  <view class="header-card">
+    <view>
+      <view class="brand-row">
+        <view class="brand-dot"></view>
+        <text class="brand-sub">传感融合 · 路径感知</text>
+      </view>
+      <text class="brand-title">传感与定位中心</text>
+      <text class="brand-desc">集中展示超声波、IMU、GPS、雷达和系统状态，突出整机感知链路的完整性与可视化能力。</text>
+    </view>
+    <view class="header-right">
+      <view class="connect-badge {{statusLevel}}">
+        <view class="signal-dot"></view>
+        <text>{{connected ? '在线' : (connecting ? '连接中' : '离线')}}</text>
+      </view>
+      <text class="header-chip">更新时间 {{lastUpdate}}</text>
+      <text class="header-chip">姿态：{{telemetry.imu.valid ? '有效' : '待校准'}}</text>
+    </view>
+  </view>
+
+  <view class="connect-panel glass-card">
+    <view class="input-wrap">
+      <text class="input-label">树莓派 IP / 网关地址</text>
+      <input class="ip-input" value="{{host}}" bindinput="onHostInput" placeholder="例如 192.168.4.1:8765" placeholder-class="placeholder" />
+    </view>
+    <button wx:if="{{!connected}}" class="connect-btn" bindtap="connect">连接</button>
+    <button wx:else class="disconnect-btn" bindtap="disconnect">断开</button>
+  </view>
+
+  <view class="grid-2 sensor-top-grid">
+    <view class="section-card glass-card radar-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">雷达环境感知</text>
+          <text class="section-desc">左 / 前 / 右障碍距离</text>
+        </view>
+        <text class="mini-tag">厘米</text>
+      </view>
+      <view class="radar-item">
+        <text class="radar-label">左</text>
+        <view class="bar"><view class="bar-fill" style="width: {{telemetry.radar.leftPercent}}%;"></view></view>
+        <text class="radar-value">{{telemetry.radar.left}} cm</text>
+      </view>
+      <view class="radar-item">
+        <text class="radar-label">前</text>
+        <view class="bar"><view class="bar-fill front" style="width: {{telemetry.radar.frontPercent}}%;"></view></view>
+        <text class="radar-value">{{telemetry.radar.front}} cm</text>
+      </view>
+      <view class="radar-item">
+        <text class="radar-label">右</text>
+        <view class="bar"><view class="bar-fill" style="width: {{telemetry.radar.rightPercent}}%;"></view></view>
+        <text class="radar-value">{{telemetry.radar.right}} cm</text>
+      </view>
+    </view>
+
+    <view class="section-card glass-card rowend-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">行末识别 / 姿态</text>
+          <text class="section-desc">超声波识别换行点，IMU 参与航向校正</text>
+        </view>
+        <text class="mini-tag">关键链路</text>
+      </view>
+      <view class="grid-2 mini-metrics">
+        <view class="mini-card">
+          <text class="metric-label">超声波距离</text>
+          <view class="metric-value-row"><text class="metric-value accent-gold">{{telemetry.ultrasonic_cm}}</text><text class="metric-unit">cm</text></view>
+        </view>
+        <view class="mini-card">
+          <text class="metric-label">航向角</text>
+          <view class="metric-value-row"><text class="metric-value accent-green">{{telemetry.imu.yaw}}</text><text class="metric-unit">°</text></view>
+        </view>
+      </view>
+      <view class="pill-row status-pills">
+        <text class="pill {{telemetry.row_end ? 'warn-pill' : 'good-pill'}}">{{telemetry.row_end ? '接近行末' : '当前不在行末'}}</text>
+        <text class="pill">Roll {{telemetry.imu.roll}}°</text>
+        <text class="pill">Pitch {{telemetry.imu.pitch}}°</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="grid-2 lower-grid">
+    <view class="section-card glass-card gps-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">GPS 定位信息</text>
+          <text class="section-desc">用于展示定位与轨迹能力</text>
+        </view>
+        <text class="mini-tag">卫星 {{telemetry.gps.sats}}</text>
+      </view>
+      <view class="metric-card gps-card-inner">
+        <view class="gps-top-row">
+          <text class="gps-status {{telemetry.gps.fix ? 'ok' : 'wait'}}">{{telemetry.gps.fix ? '已定位' : '未定位'}}</text>
+          <text class="gps-speed">速度 {{telemetry.gps.speed}} m/s</text>
+        </view>
+        <view class="coord-block">
+          <text class="coord-label">纬度</text>
+          <text class="coord-value">{{telemetry.gps.lat}}</text>
+        </view>
+        <view class="coord-block">
+          <text class="coord-label">经度</text>
+          <text class="coord-value">{{telemetry.gps.lng}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section-card glass-card sys-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">系统健康状态</text>
+          <text class="section-desc">通信、电量、树莓派与驱动状态</text>
+        </view>
+        <text class="mini-tag">运行稳定性</text>
+      </view>
+      <view class="score-row"><text class="score-name">电池电压</text><text class="score-value">{{telemetry.battery.voltage}} V</text></view>
+      <view class="score-row"><text class="score-name">电池电量</text><text class="score-value">{{telemetry.battery.percent}} %</text></view>
+      <view class="score-row"><text class="score-name">通信信号</text><text class="score-value">{{telemetry.signal}} %</text></view>
+      <view class="score-row"><text class="score-name">CPU 温度</text><text class="score-value">{{telemetry.cpu_temp || 43.6}} ℃</text></view>
+      <view class="score-row"><text class="score-name">驱动链路</text><text class="score-value">{{telemetry.comm_ok ? '正常' : '异常'}}</text></view>
+    </view>
+  </view>
+
+  <view class="section-card glass-card footer-panel">
+    <view class="section-head compact-head">
+      <view>
+        <text class="section-title">感知链路说明</text>
+        <text class="section-desc">识别 → 决策 → 执行 → 回传</text>
+      </view>
+      <text class="mini-tag">链路摘要</text>
+    </view>
+    <view class="pill-row">
+      <text class="pill">超声波：识别行末位置</text>
+      <text class="pill">IMU：实现换行姿态校正</text>
+      <text class="pill">GPS：展示位置与速度</text>
+      <text class="pill">雷达：侧前环境感知</text>
+      <text class="pill">状态回传：支撑远程决策</text>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>

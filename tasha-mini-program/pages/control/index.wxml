@@ -1,0 +1,137 @@
+<view class="page-shell {{isPad ? 'pad-mode' : 'phone-mode'}}">
+  <view class="top-bg"></view>
+  <view class="nav-safe"></view>
+
+  <view class="header-card">
+    <view>
+      <view class="brand-row">
+        <view class="brand-dot"></view>
+        <text class="brand-sub">人工接管 · 安全联动</text>
+      </view>
+      <text class="brand-title">远程控制中心</text>
+      <text class="brand-desc">支持手机、平板实时操控小车、手动接管、状态跟踪与一键急停。</text>
+    </view>
+    <view class="header-right">
+      <view class="connect-badge {{statusLevel}}">
+        <view class="signal-dot"></view>
+        <text>{{connected ? '连接正常' : (connecting ? '连接中' : '未连接')}}</text>
+      </view>
+      <text class="header-chip">时延：{{telemetry.latency || 32}} ms</text>
+      <text class="header-chip">更新时间 {{lastUpdate}}</text>
+    </view>
+  </view>
+
+  <view class="connect-panel glass-card">
+    <view class="input-wrap">
+      <text class="input-label">树莓派 IP / 网关地址</text>
+      <input class="ip-input" value="{{host}}" bindinput="onHostInput" placeholder="例如 192.168.4.1:8765" placeholder-class="placeholder" />
+    </view>
+    <button wx:if="{{!connected}}" class="connect-btn" bindtap="connect">连接</button>
+    <button wx:else class="disconnect-btn" bindtap="disconnect">断开</button>
+  </view>
+
+  <view class="grid-2 control-grid">
+    <view class="section-card glass-card remote-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">遥控方向盘</text>
+          <text class="section-desc">按住方向键运行，松手自动停车</text>
+        </view>
+        <text class="mini-tag">{{telemetry.mode === 'auto' ? '当前自动中' : '当前人工'}} </text>
+      </view>
+
+      <view class="speed-card">
+        <view class="speed-head">
+          <text class="speed-label">速度</text>
+          <text class="speed-value">{{speed}}%</text>
+        </view>
+        <slider class="speed-slider" value="{{speed}}" min="10" max="90" step="5" activeColor="#2ee8b6" backgroundColor="rgba(255,255,255,0.16)" block-size="22" bindchange="onSpeedChange" />
+      </view>
+
+      <view class="optimized-pad">
+        <view class="pad-empty"></view>
+        <button hover-class="none" class="drive-btn drive-forward {{activeDir === 'forward' ? 'pressed' : ''}}" data-dir="forward" bindtouchstart="pressMove" bindtouchend="releaseMove" bindtouchcancel="releaseMove">
+          <text class="drive-icon">⌃</text>
+          <text class="drive-label">前进</text>
+        </button>
+        <view class="pad-empty"></view>
+
+        <button hover-class="none" class="drive-btn turn-btn turn-left-btn {{activeDir === 'left' ? 'pressed' : ''}}" data-dir="left" bindtouchstart="pressMove" bindtouchend="releaseMove" bindtouchcancel="releaseMove">
+          <text class="drive-icon">↶</text>
+          <text class="drive-label">左转</text>
+        </button>
+        <button hover-class="none" class="stop-btn" bindtap="tapStop">
+          <text class="stop-text">STOP</text>
+        </button>
+        <button hover-class="none" class="drive-btn turn-btn turn-right-btn {{activeDir === 'right' ? 'pressed' : ''}}" data-dir="right" bindtouchstart="pressMove" bindtouchend="releaseMove" bindtouchcancel="releaseMove">
+          <text class="drive-icon">↷</text>
+          <text class="drive-label">右转</text>
+        </button>
+
+        <view class="pad-empty"></view>
+        <button hover-class="none" class="drive-btn drive-backward {{activeDir === 'backward' ? 'pressed' : ''}}" data-dir="backward" bindtouchstart="pressMove" bindtouchend="releaseMove" bindtouchcancel="releaseMove">
+          <text class="drive-icon">⌄</text>
+          <text class="drive-label">后退</text>
+        </button>
+        <view class="pad-empty"></view>
+      </view>
+    </view>
+
+    <view class="section-card glass-card state-panel">
+      <view class="section-head compact-head">
+        <view>
+          <text class="section-title">控制态势</text>
+          <text class="section-desc">设备状态与自动流程同步显示</text>
+        </view>
+        <text class="mini-tag">{{telemetry.stageText}}</text>
+      </view>
+      <view class="grid-2 mini-metrics">
+        <view class="mini-card">
+          <text class="metric-label">已种苗数</text>
+          <view class="metric-value-row"><text class="metric-value accent-green">{{telemetry.plant_count}}</text><text class="metric-unit">/ {{telemetry.total_count}}</text></view>
+        </view>
+        <view class="mini-card">
+          <text class="metric-label">行末距离</text>
+          <view class="metric-value-row"><text class="metric-value accent-gold">{{telemetry.ultrasonic_cm}}</text><text class="metric-unit">cm</text></view>
+        </view>
+        <view class="mini-card">
+          <text class="metric-label">航向角</text>
+          <view class="metric-value-row"><text class="metric-value">{{telemetry.imu.yaw}}</text><text class="metric-unit">°</text></view>
+        </view>
+        <view class="mini-card">
+          <text class="metric-label">电量</text>
+          <view class="metric-value-row"><text class="metric-value">{{telemetry.battery.percent}}</text><text class="metric-unit">%</text></view>
+        </view>
+      </view>
+      <view class="status-box">
+        <text class="status-title">当前状态：{{telemetry.stageText}}</text>
+        <text class="status-desc">{{telemetry.stageDesc}}</text>
+      </view>
+      <view class="log-box">
+        <view wx:for="{{logList}}" wx:key="time" class="log-line">
+          <text class="log-time">{{item.time}}</text>
+          <text class="log-text">{{item.text}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section-card glass-card action-panel">
+    <view class="section-head compact-head">
+      <view>
+        <text class="section-title">自动种植控制</text>
+        <text class="section-desc">建议先运行自动流程，再切手动接管</text>
+      </view>
+      <text class="mini-tag">安全优先</text>
+    </view>
+    <view class="action-grid">
+      <button hover-class="none" class="action-btn primary" bindtap="tapStartAuto"><text class="action-text">启动自动种植</text></button>
+      <button hover-class="none" class="action-btn" bindtap="tapPause"><text class="action-text">暂停</text></button>
+      <button hover-class="none" class="action-btn" bindtap="tapResume"><text class="action-text">继续</text></button>
+      <button hover-class="none" class="action-btn" bindtap="tapResetCount"><text class="action-text">苗数清零</text></button>
+      <button hover-class="none" class="action-btn danger" bindtap="tapEstop"><text class="action-text">紧急停止</text></button>
+    </view>
+  </view>
+
+  <view class="bottom-space"></view>
+</view>
