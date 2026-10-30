@@ -12,7 +12,7 @@ STM32F407ZGT6 全自动移栽机器人底层固件 —— 履带底盘运动控�
 | 构建 | PlatformIO + `stm32cube` HAL |
 | 烧写/调试 | CMSIS-DAP |
 | 显示 | ALIENTEK 4.3 寸屏（`LCD_FORCE_ID=0x9806`） |
-| 实时系统 | FreeRTOS（`freertos_sources.py` 从 CubeF4 包引入，主流程编译时未启用） |
+| 实时系统 | FreeRTOS（`freertos_sources.py` 从 CubeF4 包引入，由 `APP_USE_FREERTOS` 编译期开关控制，默认开启） |
 
 ## 引脚分配
 
@@ -98,6 +98,16 @@ pio run -e manual_car_control -t upload       # 编译并烧写
 | 传感器 / 显示 | `imu_test_only`、`monitor_only`、`all_features` |
 
 `一键烧写电转测试.bat` 和 `一键烧写移苗装置测试.bat` 是对应诊断环境的免命令行入口。
+
+### FreeRTOS 开关
+
+`include/app.h` 中 `APP_USE_FREERTOS` 默认为 `1`，按环境编译期覆盖：
+
+- **开启（默认）**：`auto_slow`、`st7796_slow`、`nt35510_slow`、`ssd1963_slow`、`ili9806_slow`。`main()` 末尾调用 `App_RTOS_StartScheduler()`，由 `src/app_rtos.c` 创建 5 个任务（`SafetyTask` 10 ms 安全巡检、`CarTask` 20 ms 遥控接管、`UartTask` 5 ms 串口、`DisplayTask` 20 ms 显示分频、`WorkflowTask` 执行一次自动流程后转入停机），`HAL_Delay()` 重定向为 `vTaskDelay()`。
+- **关闭**：32 个环境显式 `-DAPP_USE_FREERTOS=0`，其中包括默认环境 `manual_car_control`。此时整份 FreeRTOS 不会被链接，`main()` 走裸机超循环。
+- 各诊断/测试环境（`monitor_only`、`car_test_only` 等）在 `main()` 里有自己的 `while (1)` 循环，不会执行到调度器启动点。
+
+> 若某环境未显式置 0 又走到了常规 `main()` 流程，就会连同端口层一起编入（`monitor_only` 即属此类：中断向量与 `HAL_Delay()` 覆写会带入 `pxCurrentTCB` 等符号，但调度器并不启动）。
 
 ## 目录结构
 
